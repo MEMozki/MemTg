@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram Mod</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden; /* Скрыть прокрутку на странице */
+        }
+        iframe {
+            width: 100vw;
+            height: 100vh;
+            border: none; /* Убрать рамку */
+        }
+    </style>
+</head>
+<body>
+    <iframe id="telegramFrame" src="https://web.telegram.org/k/" onload="removeAds()"></iframe>
+
+    <script>
+        function removeAds() {
+            const frame = document.getElementById('telegramFrame');
+            try {
+                const frameDocument = frame.contentDocument || frame.contentWindow.document;
+
+                // Попытка удалить рекламу (может не сработать из-за CORS)
+                const ads = frameDocument.querySelectorAll('.ad, .ad-banner, .advertisement');
+                ads.forEach(ad => ad.remove());
+
+                // Запускаем функцию через интервал, чтобы удалить рекламу, если она появится позже
+                setInterval(() => {
+                    const ads = frameDocument.querySelectorAll('.ad, .ad-banner, .advertisement');
+                    ads.forEach(ad => ad.remove());
+                }, 3000); // Проверять каждые 3 секунды
+            } catch (error) {
+                console.error('Не удалось получить доступ к iframe:', error);
+            }
+        }
+    </script>
+</body>
+</html>
